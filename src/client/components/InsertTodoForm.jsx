@@ -1,5 +1,5 @@
 import React from 'react'
-import { addTodo } from '../actions/TodoActions'
+import { addTodoAsync } from '../actions/TodoActions'
 import PureControllerView from './PureControllerView'
 
 export default class InsertTodoForm extends PureControllerView {
@@ -16,8 +16,8 @@ export default class InsertTodoForm extends PureControllerView {
     ev.stopPropagation();
     ev.preventDefault();
 
-    this.dispatchAction(
-      addTodo(this.refs.input.getDOMNode().value)
+    this.dispatchFutureAction(
+      addTodoAsync(this.refs.input.getDOMNode().value)
     );
   }
 }

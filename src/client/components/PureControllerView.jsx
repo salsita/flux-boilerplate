@@ -2,6 +2,10 @@ import React from 'react'
 import shallowEqual from 'react-pure-render/shallowEqual'
 import CustomDispatcher from '../CustomDispatcher.js'
 
+/**
+ * Implements shouldComponentUpdate and passes dispatcher through context,
+ * down the component hierarchy
+ */
 export default class PureControllerView extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -10,7 +14,7 @@ export default class PureControllerView extends React.Component {
   }
 
   dispatchFutureAction(promise) {
-    promise.then(this.dispatchAction);
+    promise.then(this.dispatchAction.bind(this));
   }
 
   dispatchAction(action) {
@@ -24,11 +28,7 @@ export default class PureControllerView extends React.Component {
   }
 
   getDispatcher() {
-    if (this.props.dispatcher) {
-      return this.props.dispatcher;
-    } else {
-      return this.context.dispatcher;
-    }
+    return this.props.dispatcher ? this.props.dispatch : this.context.dispatcher;
   }
 }
 
