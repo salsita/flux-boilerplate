@@ -1,8 +1,8 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import * as TodoActions from '../actions/TodoActions';
+import React from 'react'
+import { addTodo } from '../actions/TodoActions'
+import PureControllerView from './PureControllerView'
 
-export default class InsertTodoForm extends PureComponent {
+export default class InsertTodoForm extends PureControllerView {
 
   render() {
     return (
@@ -16,6 +16,8 @@ export default class InsertTodoForm extends PureComponent {
     ev.stopPropagation();
     ev.preventDefault();
 
-    TodoActions.todoAdded(this.refs.input.getDOMNode().value);
+    this.dispatchAction(
+      addTodo(this.refs.input.getDOMNode().value)
+    );
   }
 }

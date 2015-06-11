@@ -1,8 +1,8 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import TodoItem from './TodoItem';
+import React from 'react'
+import PureControllerView from './PureControllerView'
+import TodoItem from './TodoItem'
 
-export default class TodoItemsList extends PureComponent {
+export default class TodoItemsList extends PureControllerView {
 
   render() {
     return (

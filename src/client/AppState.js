@@ -1,9 +1,9 @@
-import EventEmitter from 'eventemitter3';
-import {fromJS} from 'immutable';
+import EventEmitter from 'eventemitter3'
+import { fromJS } from 'immutable'
 
 export const CHANGE = Symbol();
 
-class AppState extends EventEmitter {
+export default class AppState extends EventEmitter {
 
   constructor() {
     super();
@@ -28,5 +28,3 @@ class AppState extends EventEmitter {
     this.emit(CHANGE);
   }
 }
-
-export const appState = new AppState();

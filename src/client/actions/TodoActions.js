@@ -1,10 +1,10 @@
-import * as Actions from '../constants/Actions';
-import {dispatcher} from '../CustomDispatcher';
+import { TODO_ADDED, TODO_REMOVED } from '../constants/Actions.js'
+import buildAction from './ActionBuilder.js'
 
-export function todoAdded(todo) {
-  dispatcher.dispatchAction(Actions.TODO_ADDED, todo);
+export function addTodo(todo) {
+  return buildAction(TODO_ADDED, todo);
 }
 
-export function todoRemoved(index) {
-  dispatcher.dispatchAction(Actions.TODO_REMOVED, index);
+export function removeTodo(index) {
+  return buildAction(TODO_REMOVED, index);
 }

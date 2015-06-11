@@ -1,23 +1,19 @@
-import {Dispatcher} from 'flux';
+import { Dispatcher } from 'flux'
 
-class CustomDispatcher extends Dispatcher {
+export default class CustomDispatcher extends Dispatcher {
 
-  dispatchAction(actionType, payload) {
-    this.dispatch({
-      actionType: actionType,
-      payload: payload
-    });
+  constructor(appState) {
+    super();
+    this.appState = appState;
   }
 
-  handleAction(actionType, handler) {
-    this.register((action) => {
-      if (action.actionType === actionType) {
-        console.log(`Dispatching ${actionType.toString()}`, action.payload);
+  registerReducer(reducer) {
+    return this.register((action) => {
+      const actionType = action.type;
 
-        handler(action.payload);
+      if (reducer[actionType]) {
+        reducer[actionType](this.appState, action.payload);
       }
     });
   }
 }
-
-export const dispatcher = new CustomDispatcher();

@@ -1,8 +1,8 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import *  as TodoActions from '../actions/TodoActions';
+import React from 'react'
+import { removeTodo } from '../actions/TodoActions.js'
+import PureControllerView from './PureControllerView'
 
-export default class TodoItem extends PureComponent {
+export default class TodoItem extends PureControllerView {
 
   render() {
     return (
@@ -12,7 +12,7 @@ export default class TodoItem extends PureComponent {
 
   onClick() {
     if (confirm('Do you really want to remove the item?')) {
-      TodoActions.todoRemoved(this.props.index);
+      this.dispatchAction(removeTodo(this.props.index));
     }
   }
 
