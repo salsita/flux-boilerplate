@@ -4,7 +4,8 @@
   "description": "React Flux boilerplate",
   "scripts": {
     "postinstall": "webpack --config=webpack/webpack.staging.config.js",
-    "start": "node src/server/stageServer.js"
+    "start": "node src/server/stageServer.js",
+    "test": "./node_modules/.bin/karma start"
   },
   "author": "Tomas Weiss <tomasw@salsitasoft.com>",
   "devDependencies": {
