@@ -10,3 +10,5 @@ const dispatcher = new CustomDispatcher(appState);
 dispatcher.registerReducer(TodoListReducer);
 
 React.render(<TodoList dispatcher={dispatcher} appState={appState} />, document.getElementById('app'));
+
+window.appState = appState;
