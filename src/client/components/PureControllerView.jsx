@@ -28,7 +28,7 @@ export default class PureControllerView extends React.Component {
   }
 
   getDispatcher() {
-    return this.props.dispatcher ? this.props.dispatch : this.context.dispatcher;
+    return this.props.dispatcher ? this.props.dispatcher : this.context.dispatcher;
   }
 }
 
