@@ -1,10 +1,8 @@
 import React from 'react'
 import shallowEqual from 'react-pure-render/shallowEqual'
-import CustomDispatcher from '../CustomDispatcher.js'
 
 /**
- * Implements shouldComponentUpdate and passes dispatcher through context,
- * down the component hierarchy
+ * Implements shouldComponentUpdate
  */
 export default class PureControllerView extends React.Component {
 
@@ -18,23 +16,6 @@ export default class PureControllerView extends React.Component {
   }
 
   dispatchAction(action) {
-    this.getDispatcher().dispatch(action);
-  }
-
-  getChildContext() {
-    return {
-      dispatcher: this.getDispatcher()
-    };
-  }
-
-  getDispatcher() {
-    return this.props.dispatcher ? this.props.dispatcher : this.context.dispatcher;
+    this.props.dispatcher.dispatch(action);
   }
 }
-
-const contextType = {
-  dispatcher: React.PropTypes.instanceOf(CustomDispatcher)
-};
-
-PureControllerView.contextTypes = contextType;
-PureControllerView.childContextTypes = contextType;

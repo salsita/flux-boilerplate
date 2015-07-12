@@ -8,7 +8,7 @@ export default class TodoItemsList extends PureControllerView {
     return (
       <ul>
         {this.props.todos.map((todo, index) => {
-          return <TodoItem todo={todo} index={index} key={index} />;
+          return <TodoItem todo={todo} index={index} key={index} dispatcher={this.props.dispatcher} />;
         }).toArray()}
       </ul>
     );

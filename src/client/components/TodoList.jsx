@@ -17,23 +17,13 @@ export default class TodoList extends React.Component {
     });
   }
 
-  getChildContext() {
-    return {
-      dispatcher: this.props.dispatcher
-    };
-  }
-
   render() {
     return (
       <div>
-        <InsertTodoForm />
-        <TodoItemsList {...this.state} />
+        <InsertTodoForm dispatcher={this.props.dispatcher} />
+        <TodoItemsList {...this.state} dispatcher={this.props.dispatcher} />
       </div>
     );
   }
 
 }
-
-TodoList.childContextTypes = {
-  dispatcher: React.PropTypes.instanceOf(CustomDispatcher)
-};
