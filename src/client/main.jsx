@@ -1,14 +1,5 @@
-import React from 'react'
-import AppState from './AppState'
-import CustomDispatcher from './CustomDispatcher.js'
-import TodoList from './components/TodoList'
-import TodoListReducer from './reducers/TodoListReducer.js'
+import React, { render } from 'react';
 
-// No more magic Singletons
-const appState = new AppState();
-const dispatcher = new CustomDispatcher(appState);
-dispatcher.registerReducer(TodoListReducer);
+import TodoList from './components/TodoList';
 
-React.render(<TodoList dispatcher={dispatcher} appState={appState} />, document.getElementById('app'));
-
-window.appState = appState;
+render(<TodoList />, document.getElementById('app'));

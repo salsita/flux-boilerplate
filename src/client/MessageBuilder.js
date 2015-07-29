@@ -1,4 +1,4 @@
-export default function buildAction(type, payload) {
+export default function buildMessage(type, payload) {
   return {
     type: type,
     payload: payload

@@ -1,2 +1,3 @@
-export const TODO_ADDED = Symbol('TODO_ADDED');
-export const TODO_REMOVED = Symbol('TODO_REMOVED');
+export const TODO_ADDED = 'TODO_ADDED';
+export const TODO_ADDING_REQUESTED = 'TODO_ADDING_REQUESTED';
+export const TODO_REMOVED = 'TODO_REMOVED';

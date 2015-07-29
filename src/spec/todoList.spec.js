@@ -1,33 +1,28 @@
-import AppState from '../client/AppState.js'
-import { addTodo, removeTodo } from '../client/actions/TodoActions.js'
-import { TODO_ADDED } from '../client/constants/Actions.js'
-import TodoListReducer from '../client/reducers/TodoListReducer.js'
+import { fromJS } from 'immutable';
+
+import { addTodo } from '../client/actions/TodoActions';
+import todoListReducer from '../client/reducers/TodoListReducer';
 
 const expect = require('expect');
 
 describe('Todo list', () => {
-  let appState;
+  let reduction;
 
   beforeEach(() => {
-    appState = new AppState();
+    reduction = fromJS({
+      appState: {
+        todos: [],
+        loading: false
+      },
+      effects: []
+    });
   });
 
-  it('can add new todo', () => {
+  it('should toggle loader and fire API call to store todo after adding todo', () => {
     const addTodoAction = addTodo('test');
-    TodoListReducer[addTodoAction.type](appState, addTodoAction.payload);
+    reduction = todoListReducer(reduction, addTodoAction);
 
-    expect(appState.getState().todos.count()).toBe(1);
-  });
-
-  it('can remove todo', () => {
-    const addTodoAction = addTodo('test');
-    TodoListReducer[addTodoAction.type](appState, addTodoAction.payload);
-
-    expect(appState.getState().todos.count()).toBe(1);
-
-    const removeTodoAction = removeTodo(0);
-    TodoListReducer[removeTodoAction.type](appState, removeTodoAction.payload);
-
-    expect(appState.getState().todos.count()).toBe(0);
+    expect(reduction.getIn(['appState', 'loading'])).toBe(true);
+    expect(reduction.getIn(['effects']).count()).toBe(1); // This should be more sotisphicated
   });
 });

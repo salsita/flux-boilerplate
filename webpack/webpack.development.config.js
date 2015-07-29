@@ -20,8 +20,8 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx$|\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, '../src/client'),
+      loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
+      include: path.join(__dirname, '../src/client')
     }]
   },
   resolve: {

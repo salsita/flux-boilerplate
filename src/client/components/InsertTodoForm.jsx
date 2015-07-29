@@ -1,23 +1,22 @@
-import React from 'react'
-import { addTodoAsync } from '../actions/TodoActions'
-import PureControllerView from './PureControllerView'
+import React from 'react';
+
+import PureControllerView from './PureControllerView';
+import { addTodo } from '../actions/TodoActions';
 
 export default class InsertTodoForm extends PureControllerView {
+
+  onSubmit(ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    this.dispatchAction(addTodo(this.refs.input.getDOMNode().value));
+  }
 
   render() {
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
         <input type="text" ref="input" />
       </form>
-    );
-  }
-
-  onSubmit(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    this.dispatchFutureAction(
-      addTodoAsync(this.refs.input.getDOMNode().value)
     );
   }
 }
