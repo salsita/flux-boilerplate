@@ -21,9 +21,7 @@ const mockApiCall = (request) => {
 export default buildEffectHandler({
 
   [INSERT_TODO_API_CALL]: (todo, dispatcher) => {
-    mockApiCall(todo).then((response) => {
-      dispatcher.dispatch(todoAdded(response));
-    });
+    mockApiCall(todo).then(response => dispatcher.dispatch(todoAdded(response)));
   }
 
 });

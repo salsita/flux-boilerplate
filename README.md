@@ -1,9 +1,12 @@
-# Flux boilerplate with stateless stores
+# Flux boilerplate with stateless stores and reduced side-effects
 
 This is a very simple repository demonstrating how can stateless stores (Reducers) help us to build
-more manageable Flux application.
+more manageable Flux application. It also utilizes Effect handlers to reduce side-effects from the
+Reducers.
 
 Supplementary example for article published on https://blog.javascripting.com
+
+- [Flux: No More Stores Meet Reducer](https://blog.javascripting.com/2015/06/19/flux-no-more-stores-meet-reducer/)
 
 
 ## Usage
