@@ -2,7 +2,7 @@
 
 This is a very simple repository demonstrating how can stateless stores (Reducers) help us to build
 more manageable Flux application. It also utilizes Effect handlers to reduce side-effects from the
-Reducers.
+Reducers. It's fully hot-reloadable (reducers, actions, components).
 
 Supplementary example for article published on https://blog.javascripting.com
 
