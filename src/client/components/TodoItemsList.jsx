@@ -13,10 +13,12 @@ export default class TodoItemsList extends PureControllerView {
   };
 
   render() {
+    const {todos, dispatcher} = this.props;
+
     return (
       <ul>
-        {this.props.todos.map((todo, index) => {
-          return <TodoItem todo={todo} index={index} key={index} dispatcher={this.props.dispatcher} />;
+        {todos.map((todo, index) => {
+          return <TodoItem todo={todo} index={index} key={index} dispatcher={dispatcher} />;
         }).toArray()}
       </ul>
     );
