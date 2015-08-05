@@ -17,9 +17,8 @@ export default class TodoItemsList extends PureControllerView {
 
     return (
       <ul>
-        {todos.map((todo, index) => {
-          return <TodoItem todo={todo} index={index} key={index} dispatcher={dispatcher} />;
-        }).toArray()}
+        {todos.map((todo, index) => <TodoItem todo={todo} index={index} key={index} dispatcher={dispatcher} />)
+          .toArray()}
       </ul>
     );
   }
