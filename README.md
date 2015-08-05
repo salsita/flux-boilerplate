@@ -14,26 +14,47 @@ There is a main store (it's not reducer because it's not reducing anything) in t
 The store is registered to dispatcher in the component's constructor function. The dispatcher is being
 passed down the component hierarchy so that it's possible to dispatch an action within any component.
 ```javascript
-    const dispatcher = new Dispatcher();
+    constructor() {
+      /**
+       * Reduction record represents the reduction schema returned from Reducers.
+       * It contains map which represents to our single application state Atom
+       * and it also contains list of effects. Effect is just message and message
+       * is pair of type and payload.
+       */
+      const Reduction = record({
+        appState: fromJS({
+          todos: [],
+          loading: false
+        }),
+        effects: List.of()
+      });
 
-    // This is actually top level store, composing reducers and applying effect handlers
-    dispatcher.register((action) => {
-      let reduction = this.state.reduction;
+      const dispatcher = new Dispatcher();
 
-      // we want to purge list of effects before every action
-      reduction = reduction.set('effects', List.of());
+      // This is actually top level store, composing reducers and applying effect handlers
+      dispatcher.register((action) => {
+        let reduction = this.state.reduction;
 
-      // all reducers are being executed here
-      reduction = todoListReducer(reduction, action);
+        // we want to purge list of effects before every action
+        reduction = reduction.set('effects', List.of());
 
-      // all effect handlers are being handled here
-      reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
+        // all reducers are being executed here
+        reduction = todoListReducer(reduction, action);
 
-      // let's set the reduction back to the Component's state,
-      // this will result in re-render of those pure views, whose
-      // props have changed.
-      this.setState({reduction, actionLog});
-    });
+        // all effect handlers are being handled here
+        reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
+
+        // let's set the reduction back to the Component's state,
+        // this will result in re-render of those pure views, whose
+        // props have changed.
+        this.setState({reduction, actionLog});
+      });
+
+      this.state = {
+        dispatcher: dispatcher,
+        reduction: new Reduction()
+      };
+    }
 ```
 
 The action is being dispatched to reducer, The reducer reduces a list of effects and reduces new application state:
