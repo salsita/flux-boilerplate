@@ -11,7 +11,7 @@ export default class TodoItem extends PureControllerView {
   };
 
   onClick() {
-    if (confirm('Do you really want to remove the item?')) {
+    if (confirm('Do you really want to remove this item?')) {
       this.dispatchAction(removeTodo(this.props.index));
     }
   }

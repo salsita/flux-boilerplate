@@ -23,6 +23,6 @@ describe('Todo list', () => {
     reduction = todoListReducer(reduction, addTodoAction);
 
     expect(reduction.getIn(['appState', 'loading'])).toBe(true);
-    expect(reduction.getIn(['effects']).count()).toBe(1); // This should be more sotisphicated
+    expect(reduction.getIn(['effects']).count()).toBe(1); // This should be more sophisticated.
   });
 });

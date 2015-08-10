@@ -1,76 +1,82 @@
-# Flux boilerplate with stateless stores and reduced side-effects
+# Flux boilerplate with stateless stores and reduced side effects
 
 This is a very simple repository demonstrating how can stateless stores (Reducers) help us to build
-more manageable Flux application. It also utilizes Effect handlers to reduce side-effects from the
-Reducers. It's fully hot-reloadable (reducers, actions, components).
+more manageable Flux applications. It also utilizes Effect handlers to "reduce" side-effects from the
+Reducers (see below). It is fully hot-reloadable (reducers, actions, components).
 
-Supplementary example for article published on https://blog.javascripting.com
+More details are available on the [JavaScripting Blog](https://blog.javascripting.com):
 
 - [Flux: No More Stores Meet Reducer](https://blog.javascripting.com/2015/06/19/flux-no-more-stores-meet-reducer/)
+- [Flux: Reduce Your Side Effects](TODO)
 
-## Architecture overview:
+## Architectural overview:
 
-There is a main store (it's not reducer because it's not reducing anything) in the top level component.
-The store is registered to dispatcher in the component's constructor function. The dispatcher is being
-passed down the component hierarchy so that it's possible to dispatch an action within any component.
+There is a main store (which is not a Reducer because it's not reducing anything) in the top-level component.
+The store is registered in the dispatcher in the component's constructor function. The dispatcher is
+passed down the component hierarchy so that it's possible to dispatch an action from within any component.
+
 ```javascript
-    constructor() {
-      /**
-       * Reduction record represents the reduction schema returned from Reducers.
-       * It contains map which represents to our single application state Atom
-       * and it also contains list of effects. Effect is just message and message
-       * is pair of type and payload.
-       */
-      const Reduction = record({
-        appState: fromJS({
-          todos: [],
-          loading: false
-        }),
-        effects: List.of()
-      });
+  constructor() {
+    const Reduction = record({
+      appState: fromJS({
+        todos: [],
+        loading: false
+      }),
+      effects: List.of()
+    });
 
-      const dispatcher = new Dispatcher();
+    const dispatcher = new Dispatcher();
 
-      // This is actually top level store, composing reducers and applying effect handlers
-      dispatcher.register((action) => {
-        let reduction = this.state.reduction;
+    // This is actually the top-level store, composing Reducers and applying effect handlers.
+    dispatcher.register((action) => {
+      let reduction = this.state.reduction;
 
-        // we want to purge list of effects before every action
-        reduction = reduction.set('effects', List.of());
+      // Let's store all actions so that we can replay them.
+      const actionLog = this.state.actionLog.push(action);
 
-        // all reducers are being executed here
-        reduction = todoListReducer(reduction, action);
+      // We want to purge the list of effects before every action.
+      reduction = reduction.set('effects', List.of());
 
-        // all effect handlers are being handled here
-        reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
+      // All Reducers are executed here.
+      reduction = todoListReducer(reduction, action);
 
-        // let's set the reduction back to the Component's state,
-        // this will result in re-render of those pure views, whose
-        // props have changed.
-        this.setState({reduction, actionLog});
-      });
+      // All effect handlers are handled here.
+      reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
 
-      this.state = {
-        dispatcher: dispatcher,
-        reduction: new Reduction()
-      };
-    }
+      // Let's set the reduction back to the Component's state,
+      // This will result in re-render of any pure views whose
+      // props have changed.
+      this.setState({reduction, actionLog});
+    });
+
+    // We will keep the dispatcher, reduction and action log in the root component's state.
+    // A portion of this state is passed down the component hierarchy to the corresponding
+    // components.
+    this.state = {
+      dispatcher: dispatcher,
+      reduction: new Reduction(),
+      actionLog: List.of() // This is only for debugging, so we replay actions
+    };
+  }
 ```
 
-The action is being dispatched to reducer, The reducer reduces a list of effects and reduces new application state:
+The action is passed to the Reducer, The Reducer reduces both the list of effects and the new application state:
 ```javascript
 
   /**
-   * When user submits the form, they would expect to
-   * see the loading spinner, so that they know something is going on
+   * When the user submits the form, they would expect to
+   * see the loading spinner so that they know something is going on
    * in the background.
    *
    * There are two reactions to this action:
-   * 1) Set the loading flag -> we can display loading spinner in the UI
-   * 2) Emit effect which results in API call (storing the Todo),
-   *    this effect is however not executed in the reducer
-   *    instead it's being reduced to reduction as some "message".
-   *    The message is basically pair of type and payload
+   * 1) Set the loading flag -> we can display loading spinner in the UI.
+   * 2) Emit an effect which results in an API call (storing the Todo).
+   *    This effect is however not executed in the Reducer,
+   *    instead it reduced into the reduction's effect list as a "message".
+   *    The message is just a pair of type and payload.
+   *
+   * The Reducer does not take the dispatcher as a parameter, so action
+   * chaining is not possible.
    */
   const todoListReducer = (reduction, action) {
     switch (action.type) {
@@ -86,8 +92,8 @@ The action is being dispatched to reducer, The reducer reduces a list of effects
   }
 ```
 
-List of effect is being passed to the effect handler (this all happens in the top-level store).
-The handler handles the effect and results in some side-effect:
+The list of effects is passed to the effect handler (this all happens in the top-level store).
+The handler handles the effect and results in some side effect:
 ```javascript
 
   const apiCallEffectHandler = (effect, dispatcher) {
@@ -117,4 +123,4 @@ node src/server/devServer.js
 ```
 npm test
 ```
-Navigate your browser to http://localhost:9876/
+Navigate your browser to http://localhost:9876/.

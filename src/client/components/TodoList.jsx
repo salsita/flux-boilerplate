@@ -10,10 +10,10 @@ import InsertTodoForm from './InsertTodoForm';
 import TodoItemsList from './TodoItemsList';
 
 /**
- * Reduction record represents the reduction schema returned from Reducers.
- * It contains map which represents to our single application state Atom
- * and it also contains list of effects. Effect is just message and message
- * is pair of type and payload.
+ * This Reduction record describes the reduction schema returned by Reducers.
+ * It contains a map that represents our single application state Atom
+ * and it also contains list of effects. An Effect is just a message.
+ * A message is a pair of type and payload.
  */
 const Reduction = record({
   appState: fromJS({
@@ -30,51 +30,50 @@ export default class TodoList extends React.Component {
 
     const dispatcher = new Dispatcher();
 
-    // This is actually top level store, composing reducers and applying effect handlers
+    // This is actually the top-level store, composing Reducers and applying effect handlers.
     dispatcher.register((action) => {
       let reduction = this.state.reduction;
 
-      // let's store all actions so that we can replay them
+      // Let's store all actions so that we can replay them.
       const actionLog = this.state.actionLog.push(action);
 
-      // we want to purge list of effects before every action
+      // We want to purge the list of effects before every action.
       reduction = reduction.set('effects', List.of());
 
-      // all reducers are being executed here
+      // All Reducers are executed here.
       reduction = todoListReducer(reduction, action);
 
-      // all effect handlers are being handled here
+      // All effect handlers are handled here.
       reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
 
-      // let's set the reduction back to the Component's state,
-      // this will result in re-render of those pure views, whose
+      // Let's set the reduction back to the Component's state,
+      // This will result in re-render of any pure views whose
       // props have changed.
       this.setState({reduction, actionLog});
     });
 
-    // we will keep dispatcher, reduction and action log in the root component's state,
-    // the portion of the state is being passed down the component hierarchy to corresponding
-    // components
+    // We will keep the dispatcher, reduction and action log in the root component's state.
+    // A portion of this state is passed down the component hierarchy to the corresponding
+    // components.
     this.state = {
       dispatcher: dispatcher,
       reduction: new Reduction(),
-      actionLog: List.of() // This is only for debugging, we can perform replay of actions
+      actionLog: List.of() // This is only for debugging, so we replay actions
     };
 
-    // If there is hot-reloading available
-    // We want to perform a replay after the code has been refreshed
+    // If there is hot-reloading available:
+    // We want to replay all actions after the code has been refreshed
     if (module.hot) {
       module.hot.addStatusHandler(() => setTimeout(() => window.replay()));
     }
   }
 
   componentDidUpdate() {
-
-    // The method is here only for hot-reloading
+    // The method is here only for hot-reloading.
     window.replay = () => {
-
-      // We will take the action log, reduce it in reducers and pass an them initial empty reduction
-      // strip down the effects so that we are not replaying them.
+      // We take the action log and reduce it in the reducers,
+      // passing them an initial empty reduction.
+      // We empty the effect list so that we don't replay them.
       const reduction = this.state
         .actionLog
         .reduce(todoListReducer, new Reduction())
