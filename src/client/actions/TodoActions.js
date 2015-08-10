@@ -2,7 +2,7 @@ import buildMessage from '../MessageBuilder';
 import { TODO_ADDING_REQUESTED, TODO_ADDED, TODO_REMOVED } from '../constants/Actions';
 
 /**
- * Action creators are totally pure, they don't send any API calls and don't do any logic.
+ * Action creators are totally pure. They don't make any API calls or implement business logic.
  */
 
 export function addTodo(todo) {
