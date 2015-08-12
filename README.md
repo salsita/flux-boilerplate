@@ -7,7 +7,7 @@ Reducers (see below). It is fully hot-reloadable (reducers, actions, components)
 More details are available on the [JavaScripting Blog](https://blog.javascripting.com):
 
 - [Flux: No More Stores Meet Reducer](https://blog.javascripting.com/2015/06/19/flux-no-more-stores-meet-reducer/)
-- [Flux: Reduce Your Side Effects](TODO)
+- [Flux: Reduce Your Side Effects](https://blog.javascripting.com/2015/08/12/reduce-your-side-effects/)
 
 ## Architectural overview:
 
