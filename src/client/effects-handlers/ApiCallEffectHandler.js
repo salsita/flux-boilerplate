@@ -1,15 +1,11 @@
 import { Map as map } from 'immutable';
 
-import { todoAdded } from '../actions/TodoActions';
-
-import { INSERT_TODO_API_CALL } from '../constants/Effects';
+import { todoAdded } from '../actions/todoActions';
+import * as Effects from '../constants/effects';
 
 /**
- * Again, just a helper method to return a function which
- * calls the appropriate handler (similiar to `buildReducer`).
- * `buildReducer` however accumulates the returned value,
- * which we want to ignore here, because the handler should just result in
- * some side effect and not return any value.
+ * Just a helper method (functional way) to return a function which
+ * calls the appropriate handler.
  */
 const buildEffectHandler = handlers => {
   return (dispatcher, effect) => {
@@ -20,9 +16,7 @@ const buildEffectHandler = handlers => {
 };
 
 // Let's simulate the server
-const mockApiCall = (request) => {
-  return new Promise(res => setTimeout(() => res(request + '-server-modified'), 500));
-};
+const mockApiCall = (request) => new Promise(res => setTimeout(() => res(request + '-server-modified'), 500));
 
 export default buildEffectHandler({
 
@@ -34,7 +28,7 @@ export default buildEffectHandler({
    * There are only two parameters: payload of the effect and the dispatcher,
    * therefore you can't directly modify the state but can only dispatch an action instead.
    */
-  [INSERT_TODO_API_CALL]: (todo, dispatcher) => {
+  [Effects.INSERT_TODO_API_CALL]: (todo, dispatcher) => {
     mockApiCall(todo).then(response => dispatcher.dispatch(todoAdded(response)));
   }
 

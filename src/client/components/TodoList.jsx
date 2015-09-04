@@ -2,9 +2,8 @@ import React from 'react';
 import { Dispatcher } from 'flux';
 import { Record as record, fromJS, List } from 'immutable';
 
-import todoListReducer from '../reducers/TodoListReducer';
-
-import apiCallEffectHandler from '../effects-handlers/ApiCallEffectHandler';
+import masterReducer from '../reducers/masterReducer';
+import apiCallEffectHandler from '../effects-handlers/apiCallEffectHandler';
 
 import InsertTodoForm from './InsertTodoForm';
 import TodoItemsList from './TodoItemsList';
@@ -40,8 +39,8 @@ export default class TodoList extends React.Component {
       // We want to purge the list of effects before every action.
       reduction = reduction.set('effects', List.of());
 
-      // All Reducers are executed here.
-      reduction = todoListReducer(reduction, action);
+      // Only master reducer is executed here
+      reduction = masterReducer(reduction, action);
 
       // All effect handlers are handled here.
       reduction.get('effects').forEach(apiCallEffectHandler.bind(null, dispatcher));
@@ -71,12 +70,12 @@ export default class TodoList extends React.Component {
   componentDidUpdate() {
     // The method is here only for hot-reloading.
     window.replay = () => {
-      // We take the action log and reduce it in the reducers,
-      // passing them an initial empty reduction.
+      // We take the action log and reduce it in the master reducer,
+      // passing it an initial empty reduction.
       // We empty the effect list so that we don't replay them.
       const reduction = this.state
         .actionLog
-        .reduce(todoListReducer, new Reduction())
+        .reduce(masterReducer, new Reduction())
         .set('effects', List.of());
 
       this.setState({reduction});

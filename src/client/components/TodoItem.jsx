@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import PureControllerView from './PureControllerView';
-import { removeTodo } from '../actions/TodoActions';
+import { removeTodo } from '../actions/todoActions';
 
 export default class TodoItem extends PureControllerView {
 

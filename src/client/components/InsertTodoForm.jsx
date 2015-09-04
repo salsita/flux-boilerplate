@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PureControllerView from './PureControllerView';
-import { addTodo } from '../actions/TodoActions';
+import { addTodo } from '../actions/todoActions';
 
 export default class InsertTodoForm extends PureControllerView {
 

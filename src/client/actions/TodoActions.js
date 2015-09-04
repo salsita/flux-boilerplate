@@ -1,18 +1,9 @@
-import buildMessage from '../MessageBuilder';
-import { TODO_ADDING_REQUESTED, TODO_ADDED, TODO_REMOVED } from '../constants/Actions';
+import buildMessage from '../messageBuilder';
+import * as Actions from '../constants/actions';
 
 /**
  * Action creators are totally pure. They don't make any API calls or implement business logic.
  */
-
-export function addTodo(todo) {
-  return buildMessage(TODO_ADDING_REQUESTED, todo);
-}
-
-export function todoAdded(todo) {
-  return buildMessage(TODO_ADDED, todo);
-}
-
-export function removeTodo(index) {
-  return buildMessage(TODO_REMOVED, index);
-}
+export const addTodo = todo => buildMessage(Actions.TODO_ADDING_REQUESTED, todo);
+export const todoAdded = todo => buildMessage(Actions.TODO_ADDED, todo);
+export const removeTodo = index => buildMessage(Actions.TODO_REMOVED, index);
