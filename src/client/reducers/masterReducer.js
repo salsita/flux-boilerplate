@@ -1,28 +1,22 @@
-// Master reducer idea inspired by http://www.code-experience.com/problems-with-flux/
-// We have to handle the action only in single top level reducer.
-
 import * as Actions from '../constants/actions';
-import * as TodoListReducer from './todoListReducer';
+import * as TestingReducer from './testingReducer';
+
+const sequence = (...reducers) => initialReduction => reducers.reduce((state, reducer) => reducer(state), initialReduction);
 
 export default (reduction, action) => {
-  const payload = action.payload;
-  const type = action.type;
+  const { type, payload } = action;
 
-  console.debug('Handling action', type);
-
-  return reduction.withMutations(mutableReduction => {
-    switch (type) {
-      case Actions.TODO_ADDING_REQUESTED:
-        mutableReduction.update(r => TodoListReducer.todoAddingRequested(r, payload));
-      break;
-      case Actions.TODO_ADDED:
-        mutableReduction.update(r => TodoListReducer.todoAdded(r, payload));
-      break;
-      case Actions.TODO_REMOVED:
-        mutableReduction.update(r => TodoListReducer.todoRemoved(r, payload));
-      break;
-      default:
-        console.debug(`Unhandled action ${type}`);
-    }
-  });
+  switch (type) {
+  case Actions.APPLICATION_MOUNTING:
+    return sequence(TestingReducer.applicationMounting())(reduction);
+  case Actions.ROUTER_BOOTSTRAPPED:
+    return sequence(TestingReducer.routerBootstrapped(payload))(reduction);
+  case Actions.FOO_CLICKED:
+    return sequence(TestingReducer.fooClicked())(reduction);
+  case Actions.BAR_CLICKED:
+    return sequence(TestingReducer.barClicked())(reduction);
+  default:
+    console.warn(`Unhandled action ${type}`);
+    return reduction;
+  }
 };
