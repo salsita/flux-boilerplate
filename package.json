@@ -26,6 +26,7 @@
     "eslint": "^1.8.0",
     "eslint-plugin-react": "^3.6.3",
     "react-hot-loader": "^1.2.7",
+    "request": "^2.65.0",
     "single-child": "^0.3.4",
     "webpack": "^1.12.4",
     "webpack-dev-server": "^1.12.1"
